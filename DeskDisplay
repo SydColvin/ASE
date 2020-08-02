@@ -4,13 +4,13 @@ package views;
 	import javax.swing.*;
 
 import model.Airport;
+import model.PassengerList;
 
 	public class DeskDisplay extends JPanel implements Observer {
 		
 		private Airport deskdata; 
 		private JSplitPane splitPane1;
 		private JTextPane desk1Pane, desk2Pane;
-		private JTextArea desk1List, desk2List;
 		
 
 		// sets up general GUI
