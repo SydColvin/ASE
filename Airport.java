@@ -1,4 +1,5 @@
-import java.util.TreeSet;
+package model;
+
 import java.util.concurrent.Semaphore;
 //V: Added for the OBSERVER pattern
 import java.util.*; 
@@ -49,19 +50,13 @@ public class Airport implements Subject {
 		public int getC () {return this.noCheckIns;};
 		
 		//For the actual check in process
-		public void useDesk() {	
+		public int useDesk() {	
 			Thread t = Thread.currentThread();
 			
 			//sleep for simulation purposes
 			try {t.sleep(100);} 
 			catch (InterruptedException e) {e.printStackTrace();}
 			
-			
-
-			// Include any check in code required for GUI.
-
-
-
 
 			//increase the count of check-ins
 			int n = this.noCheckIns; n++;
@@ -83,8 +78,12 @@ public class Airport implements Subject {
 			lastCheckinComplete = true;
 			}
 			
+			return n;
+			
 		}  
-
+		
+			
+		}
 		//These methods are just for identifying which desk the thread will use.
 		
 		//This one will find the next desk which isn't in use
@@ -149,7 +148,7 @@ public class Airport implements Subject {
 			t.start();
 		}
 	}
-	
+	//String for showing Desk Status
 	public String getDeskStatuses(int deskNo) {
 		String message = "";
 		if (Integer.parseInt(deskStatus[deskNo-1]) == 0) {
@@ -160,16 +159,57 @@ public class Airport implements Subject {
 			String bRefName = deskStatus[deskNo-1];
 			String bRef = (String) bRefName.subSequence(0, 4);
 			String lName = (String) bRefName.substring(5);
-			Name pName = PassengerList.findPassenger(bRef,lName).getPassengerName();
+			Name pName = passengerQueue.findPassenger(bRef,lName).getPassengerName();
 			
 			message = "Desk " + deskNo + " is serving " + pName;
+			message += ". " + "1 bag of " + passengerQueue.findPassenger(bRef,lName).getBagWeight();
+			message +=	"kg. A baggage fee of £" + passengerQueue.findPassenger(bRef,lName).getFee() +".";
 		}
 		return message;
 	}
+		//String for showing Queue Status (all passenger not yet checked in)
+		public String getQueueStatus() {
+			String status = "";
+			int n = passengerQueue.getPassengerListSize() - checkin.useDesk();
+			status += "There are currently " + n + " people waiting in the queue: " ;
+			int i = 0;
+				for (Passenger p  : passengerQueue) {
+					if (i == 0){
+						status += String.format("%-10s", "Flight");
+						status += String.format("%-30s", "Customer Name");
+						status += String.format("%-18s", "Luggage Weight");
+						status += String.format("%-10s", "Volume");
+					}	
+					status += String.format("");
+					status += String.format("%-10", p.getFlightCode());
+					status += String.format("%-30s",p.getPassengerName());
+					status += String.format("%-18s", p.getBagWeight());
+					status += String.format("%-10s", p.getBagVolume());
+					status += "\n"; i++;
+				}
+			return status;	
+			}
+	
+		
+		public String getFlightStatuses(String fcode) {
+			String message = "";
+			message += "Flight: "+ fcode + "\n";
+			message += "Distination:" + "\n"; //+ flight.getdistination();
+			message += "Checked in: " + "\n"; //+ no. of checked in + "out of" + total;
+			message += "Hold is " + " % full\n"; // need to calculate the % of checked-in;
+			message += ""; //flight Status
+
+			return message;
+		}
+		
+
 	
 	public PassengerList getPassengerQueue() {
 		return passengerQueue;
 	}
+	
+	
+
 	
 	
 	
