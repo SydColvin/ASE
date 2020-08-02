@@ -2,7 +2,7 @@ package model;
 
 import java.util.concurrent.Semaphore;
 //V: Added for the OBSERVER pattern
-import java.util.*; 
+import java.util.*;
 //V: Added for the MVC pattern. 
 import interfaces.Obsever;
 import interfaces.Subject;
@@ -36,7 +36,7 @@ public class Airport implements Subject {
 			//if not true wait a little then try again
 			try {Thread.sleep(100);} 
 			catch (InterruptedException e) {e.printStackTrace();}
-		} 
+		} 	
 		return this.superlogwiter;
 	}
 
@@ -80,10 +80,7 @@ public class Airport implements Subject {
 			
 			return n;
 			
-		}  
-		
-			
-		}
+		} 					
 		//These methods are just for identifying which desk the thread will use.
 		
 		//This one will find the next desk which isn't in use
