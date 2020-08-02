@@ -1,34 +1,36 @@
 package views;
 	import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
-
-
-	import javax.swing.*;
+import javax.swing.*;
 
 import model.Airport;
+import model.FlightList;
+import model.PassengerList;
 
 	public class FlightDisplay extends JPanel implements Observer {
 		
 		private Airport flightdata; // the clock data, containing the time
 		//GUI Components
 		private JSplitPane splitPane2a, splitPane2b;
-		private JTextArea flight1List, flight2List, flight3List;
-		private JPanel flight1Pane, flight2Pane, flight3Pane;
+		private JTextPane flight1Pane, flight2Pane, flight3Pane;
 
 		// sets up general GUI
 		public FlightDisplay(Airport flight) {	//Set SouthPanel for all flights information
-			//super()
+			//super();
 			this.flightdata = flight;
 			flight.registerOberserver(this);
 	        splitPane2a = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, flight1Pane, flight2Pane);
 	        splitPane2b = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, splitPane2a, flight3Pane);
-	        flight1Pane.setBackground(Color.PINK);
-	        flight2Pane.setBackground(Color.ORANGE);
-	        flight3Pane.setBackground(Color.BLUE);
-			//flight1Pane.setText(flightList.getFlightDetails());
-			//flight2Pane.setText(flightList.getFlightDetails());
-			//flight3Pane.setText(flightList.getFlightDetails());
+			flight1Pane.setFont(new Font (Font.MONOSPACED, Font.PLAIN,14));
+			flight1Pane.setEditable(false);
+			flight2Pane.setFont(new Font (Font.MONOSPACED, Font.PLAIN,14));
+			flight2Pane.setEditable(false);
+			flight3Pane.setFont(new Font (Font.MONOSPACED, Font.PLAIN,14));
+			flight3Pane.setEditable(false);
 	        this.add(splitPane2b);
+	        update();
 	}
 
 		/**
@@ -36,6 +38,26 @@ import model.Airport;
 		 */
 		//It needs code for the update
 		public void update() {
-		
+			ArrayList<Integer> numbers = new ArrayList<Integer>(); 
+	        int total = 5; // This has to be less than 11 
+	        Random random = new Random(); 
+	        do 
+	        { 
+	            int next = random.nextInt(5); 
+	            if (!numbers.contains(next)) 
+	            { 
+	                numbers.add(next); 
+	                System.out.println(next); 
+	            } 
+	        } while (numbers.size() < total);
+
+			String[] list = {"BA8719", "BA472", "BA1472", "BA412", "BA828"};
+			String text1 = flightdata.getFlightStatuses(list[numbers.get(1)]);
+			String text2 = flightdata.getFlightStatuses(list[numbers.get(2)]);
+			String text3 = flightdata.getFlightStatuses(list[numbers.get(3)]);
+			flight1Pane.setText(text1);
+			flight2Pane.setText(text2);
+			flight3Pane.setText(text3);
+			
 		}
 	}
